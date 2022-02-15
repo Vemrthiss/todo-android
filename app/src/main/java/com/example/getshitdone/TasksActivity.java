@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.getshitdone.models.Todo;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class TasksActivity extends AppCompatActivity {
     private Button createTaskBtn;
+    private EditText createTaskNameField;
     private TasksViewModel vm;
     private TodoAdapter adapter;
     private List<Todo> todoList = new ArrayList<>();
@@ -38,6 +40,7 @@ public class TasksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tasks);
 
         createTaskBtn = findViewById(R.id.createTaskBtn);
+        createTaskNameField = findViewById(R.id.createTaskName);
         createTaskBtn.setOnClickListener(createTaskBtnClickListener());
 
         vm = new ViewModelProvider(this).get(TasksViewModel.class);
@@ -52,7 +55,13 @@ public class TasksActivity extends AppCompatActivity {
 
     private View.OnClickListener createTaskBtnClickListener() {
         return v -> {
-            vm.createDefaultTasks();
+            String currentInputValue = createTaskNameField.getText().toString();
+            if (currentInputValue.length() == 0) {
+                vm.createDefaultTasks();
+            } else {
+                vm.createNamedTask(currentInputValue);
+                createTaskNameField.setText("");
+            }
         };
     }
 }

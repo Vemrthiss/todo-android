@@ -20,9 +20,8 @@ public class Todo {
     public Todo() {
         this.setName(DEFAULT_NAME);
     }
-    public Todo(String name, Date dueDate) {
+    public Todo(String name) {
         this.setName(name);
-        this.setDueDate(dueDate);
     }
     public Todo(Map<String, Object> document) {
         for (String documentProperty: document.keySet()) {

@@ -55,5 +55,7 @@ public class TasksViewModel extends ViewModel {
         todoRepository.createDefaultTask();
     }
 
-
+    public void createNamedTask(String name) {
+        todoRepository.createNamedTask(name);
+    }
 }
