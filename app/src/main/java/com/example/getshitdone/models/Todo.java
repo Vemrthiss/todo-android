@@ -1,21 +1,44 @@
 package com.example.getshitdone.models;
 
+import android.util.Log;
+
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Task {
+public class Todo {
     public static final String DEFAULT_NAME = "Default Task";
+    private Date _dateCreated = new Date();
     private String _name;
     private Date _dueDate;
     private List<Date> _notificationsList = new ArrayList<Date>();
 
-    public Task() {
+    public Todo() {
         this.setName(DEFAULT_NAME);
     }
-    public Task(String name, Date dueDate) {
+    public Todo(String name, Date dueDate) {
         this.setName(name);
         this.setDueDate(dueDate);
+    }
+    public Todo(Map<String, Object> document) {
+        for (String documentProperty: document.keySet()) {
+            Object value = document.get(documentProperty);
+            if (documentProperty.equals("name")) {
+                String name = value.toString();
+                this.setName(name);
+            } else if (documentProperty.equals("dateCreated")) {
+                Timestamp dateCreated = (Timestamp) value;
+                this.setDueDate(dateCreated.toDate());
+            }
+        }
+    }
+
+    public Date getDateCreated() {
+        return this._dateCreated;
     }
 
     public String getName() {
@@ -48,8 +71,15 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "_name='" + _name + '\'' +
-                ", _dueDate=" + _dueDate +
+                "_name='" + this.getName() + '\'' +
+                ", _dateCreated=" + this.getDateCreated() +
                 '}';
+    }
+
+    public Map<String, Object> getDocumentRepr() {
+        Map<String, Object> document = new HashMap<>();
+        document.put("name", this.getName());
+        document.put("dateCreated", this.getDateCreated());
+        return document;
     }
 }
